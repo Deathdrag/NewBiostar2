@@ -13,12 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ScanFingerPrint {
-    public String sessionID;
+   
     
-    public String scan(int DeviceID,int enrollQuality) throws MalformedURLException, URISyntaxException, IOException
+    public String scan(int DeviceID,int enrollQuality,String sessionID) throws MalformedURLException, URISyntaxException, IOException
     {
-        AdminClass snID = new AdminClass();
-        sessionID = snID.LoginAction();
         
         String userFile = "/devices/"+DeviceID+"/scan_fingerprint";
         String json = "{\n" +
@@ -38,7 +36,7 @@ public class ScanFingerPrint {
         return Results;
     }
     
-    public String ScanFingerNumber(int fingers,int DeviceID,int enrollQuality) throws URISyntaxException, IOException
+    public String ScanFingerNumber(int fingers,int DeviceID,int enrollQuality,String sessionID) throws URISyntaxException, IOException
     {
         
         JSONObject json = new JSONObject();
@@ -59,11 +57,11 @@ public class ScanFingerPrint {
         for(int idx =0; idx < fingers; idx++)
         {
             JOptionPane.showMessageDialog(null,"Click Ok to scan the "+a+" finger.");
-            Results = scan.scan(DeviceID,enrollQuality);
+            Results = scan.scan(DeviceID,enrollQuality,sessionID);
             while("Scan quality is low.".equals(Results))
             {
                 JOptionPane.showMessageDialog(null,"Scan your fingerprint again");
-                Results = scan.scan(DeviceID,enrollQuality);
+                Results = scan.scan(DeviceID,enrollQuality,sessionID);
 
             }
              if(!"Scan quality is low.".equals(Results))
@@ -73,11 +71,11 @@ public class ScanFingerPrint {
                     Thread.sleep(500);
                 }catch(InterruptedException e)
                 {}
-                Results2 = scan.scan(DeviceID,enrollQuality);
+                Results2 = scan.scan(DeviceID,enrollQuality,sessionID);
                 while("Scan quality is low.".equals(Results2))
                     {
                         JOptionPane.showMessageDialog(null,"Scan your fingerprint again");
-                        Results2 = scan.scan(DeviceID,enrollQuality);
+                        Results2 = scan.scan(DeviceID,enrollQuality,sessionID);
                     }
             }
              if(Results2!=null && Results!=null)
@@ -88,7 +86,7 @@ public class ScanFingerPrint {
                 template1 = (String) jObj.get("template0");
                 
                 VerifyFingerPrint verify = new VerifyFingerPrint();
-                String Results3 = verify.verify(DeviceID, template0, template1);
+                String Results3 = verify.verify(DeviceID, template0, template1,sessionID);
                 
                 if(Results3!=null)
                 {
@@ -120,8 +118,8 @@ public class ScanFingerPrint {
         }
         return message;
     }
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    ScanFingerPrint lg = new ScanFingerPrint();
-    lg.ScanFingerNumber(2,539571364, 80);
-    }
+//    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
+//    ScanFingerPrint lg = new ScanFingerPrint();
+//    lg.ScanFingerNumber(2,539571364, 80);
+//    }
 }

@@ -8,11 +8,9 @@ import java.net.URL;
 import org.apache.http.client.utils.URIBuilder;
 
 public class VerifyFingerPrint {
-    public String sessionID;
-    public String verify(int DeviceID,String template0,String template1) throws IOException, MalformedURLException, URISyntaxException
+   
+    public String verify(int DeviceID,String template0,String template1,String sessionID) throws IOException, MalformedURLException, URISyntaxException
     {
-        AdminClass snID = new AdminClass();
-        sessionID = snID.LoginAction();
         
         String userFile = "/devices/"+DeviceID+"/scan_fingerprint";
         String json = "{\n" +

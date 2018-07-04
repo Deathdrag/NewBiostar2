@@ -13,12 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventTypesList {
-    public String sessionID;
     
-    public String eventstype() throws MalformedURLException, URISyntaxException, IOException
+    public String eventstype(String sessionID) throws MalformedURLException, URISyntaxException, IOException
     {
-        AdminClass snID = new AdminClass();
-        sessionID = snID.LoginAction();
+        
         
         String userFile = "/references/event_types";
         
@@ -30,7 +28,8 @@ public class EventTypesList {
         
         HttpGetClass post = new HttpGetClass();
         String Results = post.httpget(uri, sessionID);
-        System.out.println("userlist" +Results);
+        
+        
         return Results;
     }
     
@@ -59,11 +58,5 @@ public class EventTypesList {
         System.out.println("eventcode" +Arrays.toString(eventcode));
        return eventcode;
     } 
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    EventTypesList devislist = new EventTypesList();
-    devislist.CodeListName(devislist.eventstype());
     
-    
-    
-    }
 }

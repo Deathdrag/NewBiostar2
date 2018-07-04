@@ -75,19 +75,4 @@ public class ActivateDeactivate {
         return Results;
     }
     
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    UserGroupList lg = new UserGroupList();
-    String [] user_group = lg.usergroupsID(lg.usergrouplist());
-    
-    AccessGroupList access = new AccessGroupList();
-    String [] access_group = access.accessIDarry(access.accesslist());
-   
-    
-    UsersList userlist = new UsersList();
-    String[] users_ID_list = userlist.userIDarry(userlist.userslist("1032"));
-    
-    ActivateDeactivate activate = new ActivateDeactivate();
-    activate.activate(access_group[1], "2019-02-27T23:59:00.00Z", "2018-02-27T23:59:00.00Z", user_group[3], "Administrator", "IN", users_ID_list);
-    
-    }
 }

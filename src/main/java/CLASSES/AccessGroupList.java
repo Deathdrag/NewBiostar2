@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 public class AccessGroupList {
      public String sessionID;
+     
     public String accesslist() throws IOException, MalformedURLException, URISyntaxException
     {
         AdminClass snID = new AdminClass();
@@ -31,9 +32,12 @@ public class AccessGroupList {
         HttpGetClass post = new HttpGetClass();
         String Results = post.httpget(uri, sessionID);
         
+        AccessGroupList acclist = new AccessGroupList();
+        String Results1 = acclist.accesslist();
+        acclist.accessIDarry(Results);
+                
         return Results;
     }
-    
     public String[] accessIDarry(String Results)
     {
         JSONObject jsonObject = new JSONObject(Results);
@@ -51,16 +55,10 @@ public class AccessGroupList {
         String[] access_groups_id_list = list.toArray(new String[0]);
         String[] access_groups_name = list1.toArray(new String[0]);
         
-        System.out.println("access_groups_id" +Arrays.toString(access_groups_id_list));
-        System.out.println("access_groups_name" +Arrays.toString(access_groups_name));
+        System.out.println("access_groups_id =" +Arrays.toString(access_groups_id_list));
+        System.out.println("access_groups_name =" +Arrays.toString(access_groups_name));
         
         return access_groups_id_list;
     }
     
-   
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    AccessGroupList lg = new AccessGroupList();
-    lg.accessIDarry(lg.accesslist());
-    
-    }
 }

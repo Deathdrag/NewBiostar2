@@ -12,7 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class UserGroupList {
-     public String sessionID;
+     
+    public String sessionID;
+    
     public String usergrouplist() throws IOException, MalformedURLException, URISyntaxException
     {
         AdminClass snID = new AdminClass();
@@ -31,16 +33,19 @@ public class UserGroupList {
         HttpGetClass post = new HttpGetClass();
         String Results = post.httpget(uri, sessionID);
         
+        UserGroupList usergroup = new UserGroupList();
+        usergroup.usergroupsID(Results);
+        
         return Results;
     }
-    
-     public String[] usergroupsID(String Results)
+    public String[] usergroupsID(String Results)
     {
         JSONObject jsonObject = new JSONObject(Results);
         JSONArray tsmresponse = (JSONArray) jsonObject.get("records");
        
         ArrayList<String> list = new ArrayList<>();
         ArrayList<String> list1 = new ArrayList<>();
+        
         
         for(int i=0; i<tsmresponse.length(); i++)
         {
@@ -50,16 +55,10 @@ public class UserGroupList {
         
         String[] user_groups_id_list = list.toArray(new String[0]);
         String[] user_groups_name = list1.toArray(new String[0]);
+        
         System.out.println("user_groups_id" +Arrays.toString(user_groups_id_list));
         System.out.println("user_groups_name" +Arrays.toString(user_groups_name));
         
         return user_groups_id_list;
-    }
-    
-    
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    UserGroupList lg = new UserGroupList();
-    lg.usergroupsID(lg.usergrouplist());
-    
     }
 }

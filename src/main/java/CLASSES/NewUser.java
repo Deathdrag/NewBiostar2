@@ -9,12 +9,36 @@ import java.net.URL;
 import org.apache.http.client.utils.URIBuilder;
 
 public class NewUser {
-    public String sessionID;
+   public String sessionID;
+   
     public String adduser(String email, String name, String login_id,String expdate, String password, 
-          String startdate,String user_id, String phone_no, String operator_name, int operator_no,int user_group_id,String user_group_name,int access_groups_id,String access_groups_name) throws URISyntaxException, MalformedURLException, IOException
+          String startdate,String user_id, String phone_no, String operator_name, int user_group_id,String user_group_name,int access_groups_id,String access_groups_name) throws URISyntaxException, MalformedURLException, IOException
     {
+      
         AdminClass snID = new AdminClass();
         sessionID = snID.LoginAction();
+        
+        int operator_no = 0;
+        
+        switch (operator_name) {
+                case "Administrator":
+                    operator_no = 1;
+                    break;
+                case "User Operator":
+                    operator_no = 2;
+                    break;
+                case "Monitoring operator":
+                    operator_no = 3;
+                    break;
+                case "T&A Operator":
+                    operator_no = 254;
+                    break;
+                case "User":
+                    operator_no = 255;
+                    break;
+                default:
+                    break;
+            }
         
         String userFile = "/users";
         
@@ -44,8 +68,5 @@ public class NewUser {
         String Results = post.httppost(uri, json, sessionID);
         return Results;
     }
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    NewUser lg = new NewUser();
-    lg.adduser("commerceyrd@gmail.com", "commerceryd", "commerceryd", "2019-02-27T23:59:00.00Z", "commerceryd747", "2018-02-27T23:59:00.00Z", "4857", "0715668934", "Monitoring operator", 3,1032,"drag in",3,"VistorGroup");
-}
+   
 }

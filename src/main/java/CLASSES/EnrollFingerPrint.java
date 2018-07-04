@@ -8,12 +8,11 @@ import java.net.URL;
 import org.apache.http.client.utils.URIBuilder;
 
 public class EnrollFingerPrint {
-    public String sessionID;
     
-    public String enroll(String user_id,String FingerPrintArrylist) throws URISyntaxException, MalformedURLException, IOException
+    
+    public String enroll(int user_id,String FingerPrintArrylist,String sessionID) throws URISyntaxException, MalformedURLException, IOException
     {
-        AdminClass snID = new AdminClass();
-        sessionID = snID.LoginAction();
+        
         
         String userFile = "/users/"+user_id+"/fingerprint_templates";
         String json = ""+FingerPrintArrylist+"";
@@ -30,11 +29,5 @@ public class EnrollFingerPrint {
         return Results;
         
     }
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    ScanFingerPrint lg = new ScanFingerPrint();
-    String FingerPrintArrylist = lg.ScanFingerNumber(2,539571364, 80);
-    
-    EnrollFingerPrint enrl = new EnrollFingerPrint();
-    enrl.enroll("789", FingerPrintArrylist);
-    }
+//    
 }

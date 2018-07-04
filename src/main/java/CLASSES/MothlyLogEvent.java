@@ -10,19 +10,21 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MothlyLogEvent {
-    public String sessionID;
+  
     
-    public String logeventslist(String[] codelist,String[] deviceQueryList) throws MalformedURLException, URISyntaxException, IOException
+    public String logeventslist(String[] codelist,String[] deviceQueryList,String sessionID) throws MalformedURLException, URISyntaxException, IOException
     {
-        AdminClass snID = new AdminClass();
-        sessionID = snID.LoginAction();
-        
+      
         String userFile = "/monitoring/event_log/search_by_device";
         
         int limit = 0;
@@ -43,7 +45,7 @@ public class MothlyLogEvent {
         HttpPostClass post = new HttpPostClass();
         String Results = post.httppost(uri, json, sessionID);
         
-        LogEventSearch logeventsearch = new LogEventSearch();
+        MothlyLogEvent logeventsearch = new MothlyLogEvent();
                         logeventsearch.MonthlyLogs(Results);
         return Results;
     }
@@ -70,17 +72,50 @@ public class MothlyLogEvent {
        return valulist;
     }
     
-    public static void main(String args[]) throws MalformedURLException, IOException, URISyntaxException{
-    AvailabeDeviceList devislist = new AvailabeDeviceList();
-    String List = devislist.devislist();
     
-    EventTypesList eventtypeslist = new EventTypesList();
-    String[] ValuList = eventtypeslist.CodeListName(eventtypeslist.eventstype());
-    
-    MothlyLogEvent monthlylist = new MothlyLogEvent();
-    String[] DeviceList = monthlylist.DeviceQueryList(List);
-    
-    monthlylist.logeventslist(ValuList, DeviceList);
-    
+    public String[] MonthlyLogs(String t) throws JSONException
+    {
+        JSONObject jsonObject = new JSONObject(t);
+        JSONArray tsmresponse = (JSONArray) jsonObject.get("records");
+       
+        ArrayList<String> list = new ArrayList<>();
+        String[] columnNames = { "datetime", "device id", "device name", "user group name","userid", "user name",  "event type description"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        for(int i=0; i<tsmresponse.length(); i++){
+            
+        list.add(""+tsmresponse.getJSONObject(i).getString("datetime")+"");
+        list.add(""+tsmresponse.getJSONObject(i).getJSONObject("device").getInt("id")+"");
+        list.add(""+tsmresponse.getJSONObject(i).getJSONObject("device").getString("name")+"");
+        if(tsmresponse.getJSONObject(i).has("user_group"))
+        {
+            list.add(""+tsmresponse.getJSONObject(i).getJSONObject("user_group").getString("name")+"");
+        }else
+        {
+            list.add(" ");
+        }
+        if(tsmresponse.getJSONObject(i).has("user"))
+        {
+            list.add(""+tsmresponse.getJSONObject(i).getJSONObject("user").getInt("user_id")+"");
+        }else
+        {
+            list.add(" ");
+        }
+        if(tsmresponse.getJSONObject(i).has("user")&&tsmresponse.getJSONObject(i).getJSONObject("user").has("name"))
+        {
+            list.add(""+tsmresponse.getJSONObject(i).getJSONObject("user").getString("name")+"");
+        }else
+        {
+            list.add(" ");
+        }
+        
+        list.add(""+tsmresponse.getJSONObject(i).getJSONObject("event_type").getString("description")+"");
+        model.addRow(list.toArray());
+        list.clear();
+        }
+        JTable table = new JTable( model );
+        JOptionPane.showMessageDialog(null, new JScrollPane(table));
+        String[] valuLogList = list.toArray(new String[0]);
+        return valuLogList;
+        
     }
 }

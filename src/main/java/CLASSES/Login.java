@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 public class Login {
     public String sessionID;
+    
     public String LoginAction(String userid,String password) throws MalformedURLException, IOException
     {
         BASE_URL domainName = new BASE_URL();
@@ -65,8 +66,5 @@ public class Login {
         }
         return Results; 
     }
-    public static void main(String args[]) throws MalformedURLException, IOException{
-    Login lg = new Login();
-    lg.LoginAction("admin", "admin747");
-}
+    
 }
